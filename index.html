@@ -34,14 +34,37 @@
     </div>
     <div class="view-group">
       <label for="riskLevel">표시 기준</label>
-      <select id="riskLevel">
-        <option value="overall">종합 위험도</option>
-        <option value="flood">홍수</option>
-        <option value="heat">폭염</option>
-        <option value="drought">가뭄</option>
-        <option value="rain">집중호우</option>
-        <option value="salinity">염수 침입</option>
-      </select>
+      <div class="filter-group">
+
+  <button class="filter risk-filter active" data-risk="overall">
+    종합
+  </button>
+
+  <button class="filter risk-filter" data-risk="heat">
+    🌡️ 폭염
+  </button>
+
+  <button class="filter risk-filter" data-risk="air">
+    🌫️ 대기질
+  </button>
+
+  <button class="filter risk-filter" data-risk="flood">
+    🌊 침수
+  </button>
+
+  <button class="filter risk-filter" data-risk="rain">
+    🌧️ 집중호우
+  </button>
+
+  <button class="filter risk-filter" data-risk="drought">
+    💧 가뭄
+  </button>
+
+  <button class="filter risk-filter" data-risk="green">
+    🌳 녹지
+  </button>
+
+</div>
     </div>
   </div>
 </nav>
