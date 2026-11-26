@@ -2,503 +2,541 @@ let currentCategory = "all";
 let currentMetric = "overall";
 
 
-// ===============================
+// ========================================
 // 지도 생성
-// ===============================
+// ========================================
 
 const map = L.map("map", {
   zoomControl: true
-}).setView(
-  [21.0285, 105.8542],
-  11
-);
+}).setView([21.0285, 105.8542], 11);
 
+
+// ========================================
+// 지도 타일
+// ========================================
 
 L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
-    maxZoom: 18,
-    attribution:
-      '&copy; OpenStreetMap contributors'
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap contributors"
   }
 ).addTo(map);
 
 
-// ===============================
-// 위험도 함수
-// ===============================
+// ========================================
+// 마커 저장
+// ========================================
 
-function levelName(score) {
+let markers = [];
 
-  if (score >= 5) {
-    return "매우 높음";
+
+// ========================================
+// 위험도 → 색
+// ========================================
+
+function getRiskColor(score) {
+
+  if (score <= 1) {
+    return "#2ecc71";
   }
 
-  if (score >= 4) {
-    return "높음";
+  if (score <= 2) {
+    return "#a8d840";
   }
 
-  if (score >= 3) {
-    return "보통";
+  if (score <= 3) {
+    return "#f1c40f";
   }
 
-  return "낮음";
+  if (score <= 4) {
+    return "#f39c12";
+  }
+
+  return "#e74c3c";
 }
 
 
-function levelClass(score) {
+// ========================================
+// 위험도 → 크기
+// ========================================
 
-  if (score >= 5) {
-    return "extreme";
-  }
+function getRadius(score) {
 
-  if (score >= 4) {
-    return "high";
-  }
+  return 8 + (score * 2.5);
 
-  if (score >= 3) {
-    return "medium";
-  }
-
-  return "low";
 }
 
 
-function markerColor(score) {
+// ========================================
+// 위험도 이름
+// ========================================
 
-  if (score >= 5) {
-    return "#d94b4b";
-  }
+function getRiskName(score) {
 
-  if (score >= 4) {
-    return "#f28b4b";
-  }
+  const names = {
+    1: "매우 낮음",
+    2: "낮음",
+    3: "보통",
+    4: "높음",
+    5: "매우 높음"
+  };
 
-  if (score >= 3) {
-    return "#e3bf4c";
-  }
+  return names[score];
 
-  return "#58a667";
 }
 
+
+// ========================================
+// 위험도 설명
+// ========================================
+
+function getRiskDescription(score) {
+
+  const descriptions = {
+    1: "위험 가능성이 비교적 낮은 지역",
+    2: "위험 가능성이 낮은 지역",
+    3: "일부 기후위험에 주의가 필요한 지역",
+    4: "기후위험에 대한 대비가 필요한 지역",
+    5: "기후위험이 매우 높다고 추정되는 지역"
+  };
+
+  return descriptions[score];
+
+}
+
+
+// ========================================
+// 카테고리 이름
+// ========================================
+
+function categoryLabel(category) {
+
+  const labels = {
+
+    all: "전체",
+
+    human: "👤 사람",
+
+    animal: "🐾 동물",
+
+    plant: "🌱 식물"
+
+  };
+
+  return labels[category];
+
+}
+
+
+// ========================================
+// 위험 유형 이름
+// ========================================
 
 function metricLabel(metric) {
 
   const labels = {
 
     overall: "종합 위험도",
+
     heat: "폭염",
+
     air: "대기질",
+
     flood: "침수",
+
     rain: "집중호우",
+
     drought: "가뭄",
+
     green: "녹지"
 
   };
 
-  return labels[metric] || "종합 위험도";
+  return labels[metric];
+
 }
 
 
-// ===============================
-// 분석 대상에 따른 점수
-// ===============================
+// ========================================
+// 카테고리별 점수 보정
+// ========================================
 
-function getScore(region) {
+function getCategoryScore(point) {
+
+  let score = point[currentMetric];
+
+  /*
+    사람 / 동물 / 식물 선택 시
+    기본 위험도를 약간 다르게 보여준다.
+
+    실제 측정값이 아니라 탐구용 시각화이므로
+    각 대상에 대한 상대적인 영향 차이를 표현한다.
+  */
 
   if (currentCategory === "human") {
 
-    return Math.max(
-      region.heat,
-      region.air,
-      region.flood,
-      region.rain
-    );
+    if (
+      currentMetric === "heat" ||
+      currentMetric === "air" ||
+      currentMetric === "flood" ||
+      currentMetric === "rain"
+    ) {
+      score += 0.4;
+    }
 
   }
-
 
   if (currentCategory === "animal") {
 
-    return Math.max(
-      region.flood,
-      region.rain,
-      region.drought
-    );
+    if (
+      currentMetric === "flood" ||
+      currentMetric === "rain" ||
+      currentMetric === "green"
+    ) {
+      score += 0.4;
+    }
 
   }
-
 
   if (currentCategory === "plant") {
 
-    return Math.max(
-      region.heat,
-      region.rain,
-      region.drought,
-      region.green
-    );
+    if (
+      currentMetric === "drought" ||
+      currentMetric === "heat" ||
+      currentMetric === "flood" ||
+      currentMetric === "rain"
+    ) {
+      score += 0.4;
+    }
 
   }
 
 
-  if (currentMetric !== "overall") {
+  score = Math.max(1, Math.min(5, score));
 
-    return region[currentMetric];
+  return Math.round(score);
 
-  }
-
-
-  return region.overall;
 }
 
 
-// ===============================
-// 지도 원 저장
-// ===============================
+// ========================================
+// 마커 제거
+// ========================================
 
-let mapLayers = [];
+function clearMarkers() {
 
+  markers.forEach(marker => {
 
-// ===============================
-// 지도 다시 그리기
-// ===============================
+    map.removeLayer(marker);
 
-function renderMap() {
-
-  // 기존 원 제거
-  mapLayers.forEach(layer => {
-    map.removeLayer(layer);
   });
 
-  mapLayers = [];
+  markers = [];
+
+}
 
 
-  // 지역별 원 생성
-  RISK_DATA.forEach(region => {
+// ========================================
+// 지도에 마커 표시
+// ========================================
 
-    const score = getScore(region);
+function renderMarkers() {
 
-    const color = markerColor(score);
-
-    const radius = 12 + score * 4;
+  clearMarkers();
 
 
-    const circle = L.circleMarker(
-      [region.lat, region.lng],
+  RISK_DATA.forEach(point => {
+
+    const score = getCategoryScore(point);
+
+    const color = getRiskColor(score);
+
+    const radius = getRadius(score);
+
+
+    const marker = L.circleMarker(
+      [point.lat, point.lng],
       {
+
         radius: radius,
-        color: color,
+
         fillColor: color,
-        fillOpacity: 0.45,
-        opacity: 0.95,
-        weight: 2
+
+        color: "#ffffff",
+
+        weight: 2,
+
+        opacity: 0.9,
+
+        fillOpacity: 0.58
+
       }
-    ).addTo(map);
+    );
 
 
-    // 팝업
-    circle.bindPopup(`
+    marker.bindTooltip(
 
-      <div class="popup-title">
-        ${region.name}
-      </div>
+      `
+      <div class="tooltip-box">
 
-      <div class="popup-risk">
+        <strong>${point.name}</strong>
+
+        <br>
+
         ${metricLabel(currentMetric)}
+
+        :
+        <strong>${getRiskName(score)}</strong>
+
       </div>
+      `,
 
-      <div class="popup-score">
-        위험도 ${score}/5 · ${levelName(score)}
-      </div>
+      {
+        direction: "top",
 
-    `);
+        opacity: 0.95
+
+      }
+
+    );
 
 
-    // 클릭하면 오른쪽 정보 변경
-    circle.on("click", function () {
-      showDetail(region);
+    marker.on("click", () => {
+
+      showDetail(point, score);
+
     });
 
 
-    mapLayers.push(circle);
+    marker.addTo(map);
+
+    markers.push(marker);
 
   });
+
+
+  updateStatus();
+
 }
 
 
-// ===============================
-// 오른쪽 상세 정보
-// ===============================
+// ========================================
+// 상세 정보
+// ========================================
 
-function showDetail(region) {
+function showDetail(point, score) {
 
-  const welcome =
-    document.getElementById("welcome");
-
-  const detail =
-    document.getElementById("detail");
+  const panel =
+    document.getElementById("detailPanel");
 
 
-  welcome.style.display = "none";
+  panel.innerHTML = `
 
-  detail.classList.add("show");
+    <div class="detail-card">
 
+      <div class="detail-header">
 
-  detail.innerHTML = `
+        <div>
 
-    <div class="detail-title">
+          <span class="small-label">
+            분석 지점
+          </span>
 
-      <div>
+          <h2>
+            ${point.name}
+          </h2>
 
-        <div class="kicker">
-          REGIONAL ANALYSIS
         </div>
 
-        <h2>
-          ${region.name}
-        </h2>
+        <div
+          class="risk-number"
+          style="background:${getRiskColor(score)}">
+          ${score}
+        </div>
 
       </div>
 
-      <span class="
-        risk-pill
-        risk-${levelClass(region.overall)}
-      ">
-        ${levelName(region.overall)}
-      </span>
 
-    </div>
+      <div class="risk-result">
 
+        <div>
 
-    <p>
-      ${region.name}의 기후위험을
-      사람·동물·식물의 관점에서 분석한 결과입니다.
-    </p>
+          <span>
+            현재 선택
+          </span>
 
+          <strong>
+            ${metricLabel(currentMetric)}
+          </strong>
 
-    <div class="risk-grid">
-
-      ${riskCard("🌡️ 폭염", region.heat)}
-
-      ${riskCard("🌫️ 대기질", region.air)}
-
-      ${riskCard("🌊 침수", region.flood)}
-
-      ${riskCard("🌧️ 집중호우", region.rain)}
-
-      ${riskCard("💧 가뭄", region.drought)}
-
-      ${riskCard("🌳 녹지", region.green)}
-
-    </div>
+        </div>
 
 
-    <div class="detail-section">
+        <div>
 
-      <h3>
-        👤 사람
-      </h3>
+          <span>
+            위험 수준
+          </span>
 
-      <p>
-        ${region.human}
+          <strong>
+            ${getRiskName(score)}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <p class="description">
+
+        ${getRiskDescription(score)}
+
       </p>
 
-    </div>
+
+      <div class="all-risk-grid">
+
+        ${makeRiskBox("🌡️ 폭염", point.heat)}
+
+        ${makeRiskBox("🌫️ 대기질", point.air)}
+
+        ${makeRiskBox("🌊 침수", point.flood)}
+
+        ${makeRiskBox("🌧️ 집중호우", point.rain)}
+
+        ${makeRiskBox("💧 가뭄", point.drought)}
+
+        ${makeRiskBox("🌳 녹지", point.green)}
+
+      </div>
 
 
-    <div class="detail-section">
+      <div class="coordinate">
 
-      <h3>
-        🐾 동물
-      </h3>
+        📍 좌표
 
-      <p>
-        ${region.animal}
-      </p>
+        ${point.lat.toFixed(4)},
+        ${point.lng.toFixed(4)}
 
-    </div>
-
-
-    <div class="detail-section">
-
-      <h3>
-        🌱 식물
-      </h3>
-
-      <p>
-        ${region.plant}
-      </p>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h3>
-        대응 방향
-      </h3>
-
-      <p class="response">
-        ${region.response}
-      </p>
+      </div>
 
     </div>
 
   `;
+
 }
 
 
-// ===============================
-// 위험도 카드
-// ===============================
+// ========================================
+// 위험도 박스
+// ========================================
 
-function riskCard(name, score) {
-
-  const color = markerColor(score);
+function makeRiskBox(name, score) {
 
   return `
 
-    <div class="risk-card">
+    <div class="risk-box">
 
-      <div class="risk-name">
+      <span>
         ${name}
-      </div>
+      </span>
 
-      <div class="risk-level">
-        ${levelName(score)}
-      </div>
-
-      <div class="bar">
-
-        <div
-          class="bar-inner"
-          style="
-            width:${score * 20}%;
-            background:${color};
-          "
-        ></div>
-
-      </div>
+      <strong
+        style="color:${getRiskColor(score)}">
+        ${score}/5
+      </strong>
 
     </div>
 
   `;
+
 }
 
 
-// ===============================
-// 사람 / 동물 / 식물 버튼
-// ===============================
+// ========================================
+// 상단 상태 표시
+// ========================================
+
+function updateStatus() {
+
+  const status =
+    document.getElementById("currentStatus");
+
+  status.textContent =
+    `${metricLabel(currentMetric)} · ${categoryLabel(currentCategory)}`;
+
+}
+
+
+// ========================================
+// 대상 버튼
+// ========================================
 
 document
-  .querySelectorAll(".filter")
+  .querySelectorAll(".category-filter")
   .forEach(button => {
 
-    button.addEventListener(
-      "click",
-      function () {
+    button.addEventListener("click", () => {
 
-        document
-          .querySelectorAll(".filter")
-          .forEach(btn => {
-            btn.classList.remove("active");
-          });
+      document
+        .querySelectorAll(".category-filter")
+        .forEach(btn => {
 
+          btn.classList.remove("active");
 
-        this.classList.add("active");
+        });
 
 
-        currentCategory =
-          this.dataset.category;
+      button.classList.add("active");
 
 
-        currentMetric = "overall";
+      currentCategory =
+        button.dataset.category;
 
 
-        // 위험도 버튼도 종합으로
-        document
-          .querySelectorAll(".risk-filter")
-          .forEach(btn => {
-            btn.classList.remove("active");
-          });
+      renderMarkers();
 
-
-        document
-          .querySelector('[data-risk="overall"]')
-          .classList.add("active");
-
-
-        renderMap();
-
-      }
-
-    );
+    });
 
   });
 
 
-// ===============================
-// 폭염 / 대기질 / 침수 / 집중호우 / 가뭄 / 녹지
-// ===============================
+// ========================================
+// 위험 유형 버튼
+// ========================================
 
 document
-  .querySelectorAll(".risk-filter")
+  .querySelectorAll(".metric-filter")
   .forEach(button => {
 
-    button.addEventListener(
-      "click",
-      function () {
+    button.addEventListener("click", () => {
 
-        document
-          .querySelectorAll(".risk-filter")
-          .forEach(btn => {
-            btn.classList.remove("active");
-          });
+      document
+        .querySelectorAll(".metric-filter")
+        .forEach(btn => {
 
+          btn.classList.remove("active");
 
-        this.classList.add("active");
+        });
 
 
-        currentMetric =
-          this.dataset.risk;
+      button.classList.add("active");
 
 
-        // 위험도를 선택하면 전체 지역 기준
-        currentCategory = "all";
+      currentMetric =
+        button.dataset.metric;
 
 
-        document
-          .querySelectorAll(".filter")
-          .forEach(btn => {
-            btn.classList.remove("active");
-          });
+      renderMarkers();
 
-
-        document
-          .querySelector('[data-category="all"]')
-          .classList.add("active");
-
-
-        renderMap();
-
-      }
-
-    );
+    });
 
   });
 
 
-// ===============================
-// 지역 수
-// ===============================
+// ========================================
+// 초기 실행
+// ========================================
 
-document.getElementById(
-  "regionCount"
-).textContent = RISK_DATA.length;
-
-
-// ===============================
-// 최초 지도 표시
-// ===============================
-
-renderMap();
+renderMarkers();
