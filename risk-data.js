@@ -1,326 +1,883 @@
 const RISK_DATA = [
 
   {
-    name: "Hoàn Kiếm",
+    id: 1,
+    name: "Hoàn Kiếm 분석지점 01",
     lat: 21.0285,
     lng: 105.8542,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 3,
+    rain: 4,
+    drought: 3,
+    green: 5
+  },
 
+  {
+    id: 2,
+    name: "Ba Đình 분석지점 01",
+    lat: 21.0338,
+    lng: 105.8412,
     overall: 4,
+    heat: 5,
+    air: 4,
+    flood: 3,
+    rain: 4,
+    drought: 3,
+    green: 4
+  },
+
+  {
+    id: 3,
+    name: "Cầu Giấy 분석지점 01",
+    lat: 21.0365,
+    lng: 105.7905,
+    overall: 4,
+    heat: 4,
+    air: 5,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 4
+  },
+
+  {
+    id: 4,
+    name: "Tây Hồ 분석지점 01",
+    lat: 21.0665,
+    lng: 105.8215,
+    overall: 3,
     heat: 4,
     air: 4,
     flood: 4,
     rain: 4,
     drought: 3,
-    green: 4,
-
-    human:
-      "도심의 높은 건물 밀도와 교통량 때문에 폭염과 대기오염의 영향을 받기 쉽습니다.",
-
-    animal:
-      "도시화로 자연 서식공간이 제한적이며 집중호우와 침수 발생 시 도시 생태계가 영향을 받을 수 있습니다.",
-
-    plant:
-      "녹지가 상대적으로 제한적이어서 고온과 건조한 환경에서 도시 식물의 생육 부담이 커질 수 있습니다.",
-
-    response:
-      "가로수와 공원 녹지를 확대하고 폭염 시 그늘 공간과 물 공급을 확보하는 방향이 필요합니다."
+    green: 2
   },
 
-
   {
-    name: "Ba Đình",
-    lat: 21.0340,
-    lng: 105.8297,
-
+    id: 5,
+    name: "Long Biên 분석지점 01",
+    lat: 21.0458,
+    lng: 105.8905,
     overall: 4,
     heat: 4,
     air: 4,
-    flood: 3,
-    rain: 4,
+    flood: 5,
+    rain: 5,
     drought: 3,
-    green: 3,
-
-    human:
-      "도심 열섬과 교통 관련 대기오염의 영향을 받을 가능성이 있습니다.",
-
-    animal:
-      "도시 공원과 녹지에 의존하는 생물에게 기온 상승과 강한 비가 영향을 줄 수 있습니다.",
-
-    plant:
-      "공원과 가로수가 존재하지만 고온과 건조한 시기에는 수분 부족이 발생할 수 있습니다.",
-
-    response:
-      "도시 녹지 연결성을 유지하고 빗물을 저장할 수 있는 공간을 늘리는 것이 중요합니다."
+    green: 3
   },
 
+  {
+    id: 6,
+    name: "Hoàng Mai 분석지점 01",
+    lat: 20.9855,
+    lng: 105.8655,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 5,
+    rain: 5,
+    drought: 3,
+    green: 5
+  },
 
   {
-    name: "Cầu Giấy",
-    lat: 21.0367,
-    lng: 105.7906,
-
+    id: 7,
+    name: "Thanh Xuân 분석지점 01",
+    lat: 20.9985,
+    lng: 105.8065,
     overall: 5,
     heat: 5,
     air: 5,
     flood: 4,
     rain: 4,
     drought: 3,
-    green: 4,
+    green: 5
+  },
 
-    human:
-      "교통량과 건물 밀도가 높은 지역에서는 폭염과 미세먼지의 복합적인 영향을 받을 수 있습니다.",
+  {
+    id: 8,
+    name: "Hà Đông 분석지점 01",
+    lat: 20.9705,
+    lng: 105.7775,
+    overall: 4,
+    heat: 5,
+    air: 4,
+    flood: 4,
+    rain: 5,
+    drought: 4,
+    green: 4
+  },
 
-    animal:
-      "도시 개발로 서식공간이 분절되어 있으며 폭우 시 물길 주변 생태계가 영향을 받을 수 있습니다.",
+  {
+    id: 9,
+    name: "Đống Đa 분석지점 01",
+    lat: 21.0145,
+    lng: 105.8245,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 5
+  },
 
-    plant:
-      "도로와 건물 주변의 높은 온도로 식물이 받는 열 스트레스가 증가할 수 있습니다.",
-
-    response:
-      "가로수와 소규모 녹지를 연결하고 교통 및 공사에서 발생하는 대기오염을 줄이는 것이 필요합니다."
+  {
+    id: 10,
+    name: "Sóc Sơn 분석지점 01",
+    lat: 21.2575,
+    lng: 105.8465,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 3,
+    drought: 4,
+    green: 1
   },
 
 
-  {
-    name: "Tây Hồ",
-    lat: 21.0707,
-    lng: 105.8189,
+  /* =========================
+     북쪽
+  ========================= */
 
+  {
+    id: 11,
+    name: "북부 분석지점 A",
+    lat: 21.145,
+    lng: 105.78,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 3,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 12,
+    name: "북부 분석지점 B",
+    lat: 21.175,
+    lng: 105.84,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 4,
+    rain: 4,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 13,
+    name: "북부 분석지점 C",
+    lat: 21.205,
+    lng: 105.90,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 14,
+    name: "북부 분석지점 D",
+    lat: 21.235,
+    lng: 105.76,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 15,
+    name: "북부 분석지점 E",
+    lat: 21.265,
+    lng: 105.90,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+
+  /* =========================
+     북동쪽
+  ========================= */
+
+  {
+    id: 16,
+    name: "북동부 분석지점 A",
+    lat: 21.11,
+    lng: 105.94,
+    overall: 4,
+    heat: 3,
+    air: 4,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 2
+  },
+
+  {
+    id: 17,
+    name: "북동부 분석지점 B",
+    lat: 21.14,
+    lng: 106.00,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 1
+  },
+
+  {
+    id: 18,
+    name: "북동부 분석지점 C",
+    lat: 21.18,
+    lng: 105.97,
     overall: 3,
     heat: 3,
     air: 3,
     flood: 3,
     rain: 4,
-    drought: 2,
-    green: 2,
-
-    human:
-      "호수와 녹지의 영향으로 일부 지역의 열 부담이 상대적으로 낮을 수 있지만 강한 비에는 주의가 필요합니다.",
-
-    animal:
-      "호수와 주변 녹지는 도시 생물에게 중요한 서식환경이 될 수 있습니다.",
-
-    plant:
-      "수분을 이용할 수 있는 환경이 있어 다른 고밀도 도심보다 건조 스트레스가 상대적으로 낮을 수 있습니다.",
-
-    response:
-      "호수 주변 녹지를 보전하고 집중호우에 대비한 배수 관리를 강화하는 것이 좋습니다."
-  },
-
-
-  {
-    name: "Thanh Xuân",
-    lat: 20.9947,
-    lng: 105.8067,
-
-    overall: 5,
-    heat: 5,
-    air: 5,
-    flood: 5,
-    rain: 5,
     drought: 3,
-    green: 5,
-
-    human:
-      "높은 도시 밀도와 교통량으로 폭염과 대기질 위험이 커질 수 있으며 집중호우 때 침수에 주의해야 합니다.",
-
-    animal:
-      "도시 개발로 서식공간이 줄어들고 폭우와 침수에 따른 서식환경 변화가 발생할 수 있습니다.",
-
-    plant:
-      "녹지 공간이 부족한 지역에서는 높은 기온과 불규칙한 강수로 식물의 생육 환경이 불안정해질 수 있습니다.",
-
-    response:
-      "배수시설 개선과 함께 가로수·옥상녹화·소규모 공원 등 도시 녹지를 늘리는 것이 필요합니다."
+    green: 1
   },
 
 
-  {
-    name: "Hoàng Mai",
-    lat: 20.9825,
-    lng: 105.8511,
-
-    overall: 5,
-    heat: 4,
-    air: 4,
-    flood: 5,
-    rain: 5,
-    drought: 3,
-    green: 4,
-
-    human:
-      "집중호우가 발생하면 저지대와 배수시설 주변에서 침수 위험이 높아질 수 있습니다.",
-
-    animal:
-      "침수는 도시 하천과 습지 주변 생물의 서식환경을 빠르게 변화시킬 수 있습니다.",
-
-    plant:
-      "과도한 물은 식물 뿌리의 산소 공급을 방해할 수 있으며 이후 건조한 시기에는 수분 스트레스가 나타날 수 있습니다.",
-
-    response:
-      "침수 취약지역의 배수 개선과 빗물 저장 공간 확보가 중요합니다."
-  },
-
+  /* =========================
+     서쪽
+  ========================= */
 
   {
-    name: "Long Biên",
-    lat: 21.0467,
-    lng: 105.8852,
-
-    overall: 4,
+    id: 19,
+    name: "서부 분석지점 A",
+    lat: 21.06,
+    lng: 105.72,
+    overall: 3,
     heat: 3,
-    air: 4,
-    flood: 4,
+    air: 3,
+    flood: 3,
     rain: 4,
     drought: 3,
-    green: 3,
-
-    human:
-      "도시와 강 주변 지역의 특성상 집중호우와 침수에 대한 대비가 필요합니다.",
-
-    animal:
-      "홍수와 수질 변화는 강 주변의 생물과 도시 생태계에 영향을 줄 수 있습니다.",
-
-    plant:
-      "강 주변 식생은 홍수와 강한 강우에 영향을 받을 수 있지만 충분한 수분 공급의 장점도 있습니다.",
-
-    response:
-      "강변 녹지를 보전하고 침수 위험지역의 배수 및 물길 관리를 강화해야 합니다."
+    green: 2
   },
 
-
   {
-    name: "Hà Đông",
-    lat: 20.9714,
-    lng: 105.7786,
-
+    id: 20,
+    name: "서부 분석지점 B",
+    lat: 21.02,
+    lng: 105.70,
     overall: 4,
     heat: 4,
-    air: 4,
-    flood: 4,
+    air: 3,
+    flood: 3,
     rain: 4,
-    drought: 3,
-    green: 4,
-
-    human:
-      "도시 확장과 교통 증가로 폭염과 대기질 위험이 증가할 수 있습니다.",
-
-    animal:
-      "도시 개발에 따라 기존의 서식공간이 감소하고 강한 비에 따른 서식지 변화가 발생할 수 있습니다.",
-
-    plant:
-      "도시화로 토양과 녹지 공간이 줄어들면 식물의 생육 환경이 악화될 수 있습니다.",
-
-    response:
-      "개발 지역에 녹지를 함께 조성하고 빗물 침투 공간을 확보하는 것이 필요합니다."
+    drought: 4,
+    green: 2
   },
 
-
   {
-    name: "Đống Đa",
-    lat: 21.0181,
-    lng: 105.8297,
-
-    overall: 5,
-    heat: 5,
-    air: 5,
+    id: 21,
+    name: "서부 분석지점 C",
+    lat: 20.98,
+    lng: 105.69,
+    overall: 4,
+    heat: 4,
+    air: 3,
     flood: 4,
     rain: 4,
-    drought: 3,
-    green: 5,
-
-    human:
-      "도심의 높은 건물 및 교통 밀도로 인해 폭염과 대기오염의 영향을 받을 가능성이 높습니다.",
-
-    animal:
-      "녹지와 서식공간이 제한적이어서 도시 생물의 이동과 서식에 불리할 수 있습니다.",
-
-    plant:
-      "건물과 도로가 많은 지역에서는 열섬현상으로 식물이 높은 온도 스트레스를 받을 수 있습니다.",
-
-    response:
-      "가로수 확대와 소규모 녹지 확보, 교통량 관리가 중요합니다."
+    drought: 4,
+    green: 2
   },
 
-
   {
-    name: "Sóc Sơn",
-    lat: 21.2578,
-    lng: 105.8480,
-
+    id: 22,
+    name: "서부 분석지점 D",
+    lat: 20.93,
+    lng: 105.72,
     overall: 3,
     heat: 3,
     air: 3,
     flood: 3,
     rain: 4,
     drought: 4,
-    green: 1,
+    green: 1
+  },
 
-    human:
-      "도심보다 녹지가 많아 열 부담은 낮을 수 있지만 가뭄과 강한 강우에 대한 대비가 필요합니다.",
-
-    animal:
-      "산림과 자연지역은 다양한 생물의 서식처가 될 수 있지만 산림 생태계는 가뭄과 집중호우의 영향을 받을 수 있습니다.",
-
-    plant:
-      "산림 식생은 가뭄이 장기화되면 수분 부족 스트레스를 받을 수 있습니다.",
-
-    response:
-      "산림 보전과 함께 산불·가뭄 대응 및 집중호우에 따른 토양 유실 관리가 필요합니다."
+  {
+    id: 23,
+    name: "서부 분석지점 E",
+    lat: 21.10,
+    lng: 105.68,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
   },
 
 
-  {
-    name: "Đông Anh",
-    lat: 21.1394,
-    lng: 105.8461,
+  /* =========================
+     중앙
+  ========================= */
 
-    overall: 3,
-    heat: 3,
-    air: 3,
-    flood: 3,
+  {
+    id: 24,
+    name: "중앙 분석지점 A",
+    lat: 21.015,
+    lng: 105.86,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 4,
     rain: 4,
     drought: 3,
-    green: 2,
+    green: 5
+  },
 
-    human:
-      "도심보다 개방된 공간이 많지만 도시 개발이 진행되면서 기후위험이 변화할 수 있습니다.",
+  {
+    id: 25,
+    name: "중앙 분석지점 B",
+    lat: 21.045,
+    lng: 105.84,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 5
+  },
 
-    animal:
-      "농경지와 녹지가 생물의 이동 및 서식공간 역할을 할 수 있습니다.",
+  {
+    id: 26,
+    name: "중앙 분석지점 C",
+    lat: 21.07,
+    lng: 105.86,
+    overall: 4,
+    heat: 5,
+    air: 4,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 3
+  },
 
-    plant:
-      "농경지와 녹지의 식물은 집중호우와 가뭄이 번갈아 발생할 경우 생육에 영향을 받을 수 있습니다.",
+  {
+    id: 27,
+    name: "중앙 분석지점 D",
+    lat: 20.99,
+    lng: 105.84,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 5,
+    rain: 5,
+    drought: 3,
+    green: 4
+  },
 
-    response:
-      "농경지 주변 녹지를 유지하고 빗물 관리와 가뭄 대응을 함께 고려하는 것이 필요합니다."
+  {
+    id: 28,
+    name: "중앙 분석지점 E",
+    lat: 21.075,
+    lng: 105.79,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 3
   },
 
 
-  {
-    name: "Gia Lâm",
-    lat: 21.0180,
-    lng: 105.9480,
+  /* =========================
+     동쪽
+  ========================= */
 
+  {
+    id: 29,
+    name: "동부 분석지점 A",
+    lat: 21.02,
+    lng: 105.91,
     overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 3,
+    green: 3
+  },
+
+  {
+    id: 30,
+    name: "동부 분석지점 B",
+    lat: 20.98,
+    lng: 105.93,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 3,
+    green: 2
+  },
+
+  {
+    id: 31,
+    name: "동부 분석지점 C",
+    lat: 20.95,
+    lng: 105.96,
+    overall: 3,
     heat: 3,
     air: 3,
     flood: 4,
     rain: 4,
     drought: 3,
-    green: 2,
+    green: 1
+  },
 
-    human:
-      "강과 저지대 주변에서는 집중호우가 발생할 경우 침수에 주의할 필요가 있습니다.",
+  {
+    id: 32,
+    name: "동부 분석지점 D",
+    lat: 21.08,
+    lng: 105.95,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 2
+  },
 
-    animal:
-      "강과 농경지 주변 생태계는 홍수와 수질 변화의 영향을 받을 수 있습니다.",
 
-    plant:
-      "농작물과 주변 식생은 과도한 강우와 건조한 기간이 반복될 경우 생육에 영향을 받을 수 있습니다.",
+  /* =========================
+     남쪽
+  ========================= */
 
-    response:
-      "배수시설과 수로를 관리하고 농경지 주변의 녹지와 물순환 공간을 보전하는 것이 중요합니다."
+  {
+    id: 33,
+    name: "남부 분석지점 A",
+    lat: 20.94,
+    lng: 105.82,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 4,
+    rain: 5,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 34,
+    name: "남부 분석지점 B",
+    lat: 20.90,
+    lng: 105.85,
+    overall: 3,
+    heat: 4,
+    air: 3,
+    flood: 4,
+    rain: 4,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 35,
+    name: "남부 분석지점 C",
+    lat: 20.86,
+    lng: 105.82,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 4,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 36,
+    name: "남부 분석지점 D",
+    lat: 20.91,
+    lng: 105.91,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 4,
+    green: 2
+  },
+
+
+  /* =========================
+     남서쪽
+  ========================= */
+
+  {
+    id: 37,
+    name: "남서부 분석지점 A",
+    lat: 20.94,
+    lng: 105.75,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 4,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 38,
+    name: "남서부 분석지점 B",
+    lat: 20.88,
+    lng: 105.75,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 4,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 39,
+    name: "남서부 분석지점 C",
+    lat: 20.84,
+    lng: 105.78,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+
+  /* =========================
+     추가 지점
+  ========================= */
+
+  {
+    id: 40,
+    name: "하천 주변 분석지점 A",
+    lat: 21.06,
+    lng: 105.88,
+    overall: 4,
+    heat: 3,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 2,
+    green: 2
+  },
+
+  {
+    id: 41,
+    name: "하천 주변 분석지점 B",
+    lat: 21.00,
+    lng: 105.90,
+    overall: 5,
+    heat: 4,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 2,
+    green: 3
+  },
+
+  {
+    id: 42,
+    name: "하천 주변 분석지점 C",
+    lat: 20.96,
+    lng: 105.89,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 2,
+    green: 2
+  },
+
+  {
+    id: 43,
+    name: "도심 분석지점 A",
+    lat: 21.03,
+    lng: 105.87,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 5
+  },
+
+  {
+    id: 44,
+    name: "도심 분석지점 B",
+    lat: 21.00,
+    lng: 105.82,
+    overall: 5,
+    heat: 5,
+    air: 5,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 5
+  },
+
+  {
+    id: 45,
+    name: "도심 분석지점 C",
+    lat: 21.055,
+    lng: 105.81,
+    overall: 4,
+    heat: 5,
+    air: 5,
+    flood: 3,
+    rain: 4,
+    drought: 3,
+    green: 4
+  },
+
+  {
+    id: 46,
+    name: "외곽 분석지점 A",
+    lat: 21.20,
+    lng: 105.72,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 47,
+    name: "외곽 분석지점 B",
+    lat: 21.23,
+    lng: 105.96,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 48,
+    name: "외곽 분석지점 C",
+    lat: 20.87,
+    lng: 105.93,
+    overall: 2,
+    heat: 3,
+    air: 2,
+    flood: 3,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 49,
+    name: "외곽 분석지점 D",
+    lat: 21.16,
+    lng: 105.68,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 50,
+    name: "녹지 분석지점 A",
+    lat: 21.11,
+    lng: 105.82,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 3,
+    green: 1
+  },
+
+  {
+    id: 51,
+    name: "녹지 분석지점 B",
+    lat: 21.04,
+    lng: 105.76,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 3,
+    green: 1
+  },
+
+  {
+    id: 52,
+    name: "녹지 분석지점 C",
+    lat: 20.91,
+    lng: 105.70,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 3,
+    green: 1
+  },
+
+  {
+    id: 53,
+    name: "남동부 분석지점 A",
+    lat: 20.93,
+    lng: 105.98,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 4,
+    rain: 4,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 54,
+    name: "남동부 분석지점 B",
+    lat: 20.88,
+    lng: 105.96,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 4,
+    rain: 4,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 55,
+    name: "북서부 분석지점 A",
+    lat: 21.20,
+    lng: 105.66,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 56,
+    name: "북서부 분석지점 B",
+    lat: 21.25,
+    lng: 105.72,
+    overall: 2,
+    heat: 2,
+    air: 2,
+    flood: 2,
+    rain: 3,
+    drought: 4,
+    green: 1
+  },
+
+  {
+    id: 57,
+    name: "중서부 분석지점 A",
+    lat: 21.09,
+    lng: 105.75,
+    overall: 3,
+    heat: 3,
+    air: 3,
+    flood: 3,
+    rain: 4,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 58,
+    name: "중동부 분석지점 A",
+    lat: 21.10,
+    lng: 105.90,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 4,
+    rain: 4,
+    drought: 3,
+    green: 3
+  },
+
+  {
+    id: 59,
+    name: "남중부 분석지점 A",
+    lat: 20.96,
+    lng: 105.80,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 4,
+    rain: 5,
+    drought: 4,
+    green: 2
+  },
+
+  {
+    id: 60,
+    name: "남중부 분석지점 B",
+    lat: 20.90,
+    lng: 105.87,
+    overall: 4,
+    heat: 4,
+    air: 4,
+    flood: 5,
+    rain: 5,
+    drought: 4,
+    green: 2
   }
 
 ];
