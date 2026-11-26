@@ -94,3 +94,19 @@ footer strong { color:#fff; }
   #map { min-height:500px; height:500px; }
   .steps, .insight-grid { grid-template-columns:1fr; }
 }
+/* Leaflet 지도 타일 충돌 방지 */
+#map .leaflet-tile {
+    width: 256px !important;
+    height: 256px !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+#map .leaflet-tile-container {
+    width: auto !important;
+    height: auto !important;
+}
+
+#map img.leaflet-tile {
+    display: block !important;
+}
