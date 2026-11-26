@@ -1,310 +1,218 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>하노이 기후위험 지도</title>
+  <title>하노이 기후위험 지도 | Hanoi Climate Risk Map</title>
+
+  <meta
+    name="description"
+    content="하노이 지역의 기후위험을 사람·동물·식물의 관점에서 시각화한 학생 프로젝트"
+  >
 
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  >
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <header class="header">
+<header>
+  <div class="header-inner">
     <div>
-      <h1>🌏 하노이 기후위험 지도</h1>
+      <div class="logo">🌏 Hanoi Climate Risk Map</div>
+      <div class="subtitle">
+        베트남 하노이 지역 기후위험 지도 프로젝트
+      </div>
+    </div>
+  </div>
+</header>
 
-      <p>
-        Hanoi Climate Risk Map
-      </p>
+
+<main>
+
+  <!-- 필터 -->
+  <section class="controls">
+
+    <div class="control-group">
+      <span class="control-title">분석 대상</span>
+
+      <button class="filter active" data-category="all">
+        전체
+      </button>
+
+      <button class="filter" data-category="human">
+        👤 사람
+      </button>
+
+      <button class="filter" data-category="animal">
+        🐾 동물
+      </button>
+
+      <button class="filter" data-category="plant">
+        🌱 식물
+      </button>
     </div>
 
-    <div class="badge">
-      탐구용 분석 지도
+
+    <div class="control-group">
+      <span class="control-title">표시 기준</span>
+
+      <button class="risk-filter active" data-risk="overall">
+        종합
+      </button>
+
+      <button class="risk-filter" data-risk="heat">
+        🌡️ 폭염
+      </button>
+
+      <button class="risk-filter" data-risk="air">
+        🌫️ 대기질
+      </button>
+
+      <button class="risk-filter" data-risk="flood">
+        🌊 침수
+      </button>
+
+      <button class="risk-filter" data-risk="rain">
+        🌧️ 집중호우
+      </button>
+
+      <button class="risk-filter" data-risk="drought">
+        💧 가뭄
+      </button>
+
+      <button class="risk-filter" data-risk="green">
+        🌳 녹지
+      </button>
     </div>
-  </header>
+
+  </section>
 
 
-  <main>
+  <!-- 통계 -->
+  <section class="stats">
 
-    <section class="intro">
-      <h2>하노이의 기후위험을 한눈에 살펴보기</h2>
+    <div class="stat">
+      <div class="stat-label">조사 지역</div>
+      <div class="stat-value" id="regionCount">12</div>
+      <div class="stat-small">Hanoi regions</div>
+    </div>
 
-      <p>
-        지역별 기후환경의 차이를 바탕으로
-        폭염, 대기질, 침수, 집중호우, 가뭄, 녹지 위험을
-        비교하여 시각화했습니다.
-      </p>
-
-      <p class="notice">
-        ※ 지도에 표시된 수치는 실제 정부의 공식 위험도가 아닌
-        학교 탐구를 위한 추정 지표입니다.
-      </p>
-    </section>
-
-
-    <!-- 대상 -->
-    <section class="filter-section">
-
-      <h3>영향 대상</h3>
-
-      <div class="button-group">
-
-        <button
-          class="filter category-filter active"
-          data-category="all">
-          전체
-        </button>
-
-        <button
-          class="filter category-filter"
-          data-category="human">
-          👤 사람
-        </button>
-
-        <button
-          class="filter category-filter"
-          data-category="animal">
-          🐾 동물
-        </button>
-
-        <button
-          class="filter category-filter"
-          data-category="plant">
-          🌱 식물
-        </button>
-
+    <div class="stat">
+      <div class="stat-label">핵심 위험</div>
+      <div class="stat-value">6</div>
+      <div class="stat-small">
+        폭염 · 대기질 · 침수 · 집중호우 · 가뭄 · 녹지
       </div>
+    </div>
 
-    </section>
-
-
-    <!-- 위험 유형 -->
-    <section class="filter-section">
-
-      <h3>위험 유형</h3>
-
-      <div class="button-group">
-
-        <button
-          class="filter metric-filter active"
-          data-metric="overall">
-          종합
-        </button>
-
-        <button
-          class="filter metric-filter"
-          data-metric="heat">
-          🌡️ 폭염
-        </button>
-
-        <button
-          class="filter metric-filter"
-          data-metric="air">
-          🌫️ 대기질
-        </button>
-
-        <button
-          class="filter metric-filter"
-          data-metric="flood">
-          🌊 침수
-        </button>
-
-        <button
-          class="filter metric-filter"
-          data-metric="rain">
-          🌧️ 집중호우
-        </button>
-
-        <button
-          class="filter metric-filter"
-          data-metric="drought">
-          💧 가뭄
-        </button>
-
-        <button
-          class="filter metric-filter"
-          data-metric="green">
-          🌳 녹지
-        </button>
-
+    <div class="stat">
+      <div class="stat-label">분석 관점</div>
+      <div class="stat-value">3</div>
+      <div class="stat-small">
+        사람 · 동물 · 식물
       </div>
+    </div>
 
-    </section>
-
-
-    <!-- 지도 -->
-    <section class="map-section">
-
-      <div class="map-title">
-
-        <div>
-          <h2>📍 하노이 위험도 분포</h2>
-
-          <p>
-            지점을 클릭하면 해당 위치의 상세 정보를 볼 수 있습니다.
-          </p>
-        </div>
-
-        <div id="currentStatus">
-          종합 위험도 · 전체
-        </div>
-
+    <div class="stat">
+      <div class="stat-label">프로젝트</div>
+      <div class="stat-value">2026</div>
+      <div class="stat-small">
+        Climate Risk Mapping
       </div>
+    </div>
 
+  </section>
+
+
+  <!-- 지도 + 정보 -->
+  <section class="content">
+
+    <div class="map-box">
       <div id="map"></div>
+    </div>
 
-    </section>
 
+    <aside class="side-panel">
 
-    <!-- 범례 -->
-    <section class="legend">
+      <!-- 처음 화면 -->
+      <div id="welcome">
 
-      <h3>위험도 범례</h3>
-
-      <div class="legend-items">
-
-        <div>
-          <span class="legend-circle level1"></span>
-          매우 낮음
+        <div class="kicker">
+          MAP GUIDE
         </div>
 
-        <div>
-          <span class="legend-circle level2"></span>
-          낮음
-        </div>
+        <h2>
+          지역을 선택해 보세요
+        </h2>
 
-        <div>
-          <span class="legend-circle level3"></span>
-          보통
-        </div>
-
-        <div>
-          <span class="legend-circle level4"></span>
-          높음
-        </div>
-
-        <div>
-          <span class="legend-circle level5"></span>
-          매우 높음
-        </div>
-
-      </div>
-
-    </section>
+        <p>
+          지도 위의 원을 클릭하면 해당 지역의
+          기후위험 수준과 사람·동물·식물에 미치는
+          영향을 확인할 수 있습니다.
+        </p>
 
 
-    <!-- 상세정보 -->
-    <section class="detail-section">
+        <div class="legend">
 
-      <div id="detailPanel">
-
-        <div class="empty-detail">
-
-          <div class="big-icon">
-            📍
+          <div>
+            <span class="legend-dot low"></span>
+            낮음
           </div>
 
-          <h3>지도에서 지점을 선택하세요</h3>
+          <div>
+            <span class="legend-dot medium"></span>
+            보통
+          </div>
 
-          <p>
-            원을 클릭하면 해당 지역의 기후위험 정보를 확인할 수 있습니다.
-          </p>
+          <div>
+            <span class="legend-dot high"></span>
+            높음
+          </div>
+
+          <div>
+            <span class="legend-dot extreme"></span>
+            매우 높음
+          </div>
 
         </div>
 
       </div>
 
-    </section>
+
+      <!-- 상세 정보 -->
+      <div id="detail"></div>
+
+    </aside>
+
+  </section>
+
+</main>
 
 
-    <!-- 설명 -->
-    <section class="info-section">
+<footer>
 
-      <div class="info-card">
+  ※ 본 지도는 학생 탐구 프로젝트를 위한 지역별 기후위험
+  비교용 지표입니다. 실제 재난 예보나 행정기관의 공식
+  위험도를 의미하지 않습니다.
 
-        <h3>👤 사람에게 미치는 영향</h3>
+  <br>
 
-        <p>
-          폭염으로 인한 온열질환 위험 증가,
-          집중호우와 침수로 인한 생활공간 피해,
-          대기질 악화 등의 영향을 받을 수 있다.
-        </p>
+  ※ 위험도 점수는 탐구용 1~5 단계 지표입니다.
 
-      </div>
+</footer>
 
 
-      <div class="info-card">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-        <h3>🐾 동물에게 미치는 영향</h3>
+<script src="risk-data.js"></script>
 
-        <p>
-          서식지 변화와 침수, 고온 환경 등으로 인해
-          동물의 먹이와 서식환경이 변할 수 있다.
-        </p>
-
-      </div>
-
-
-      <div class="info-card">
-
-        <h3>🌱 식물에게 미치는 영향</h3>
-
-        <p>
-          높은 온도와 가뭄은 식물의 수분 부족을 일으킬 수 있으며,
-          집중호우와 침수는 뿌리의 산소 부족과 생장 저하를 일으킬 수 있다.
-        </p>
-
-      </div>
-
-    </section>
-
-
-    <section class="method">
-
-      <h2>🔬 탐구 방법</h2>
-
-      <p>
-        하노이의 도시지역, 하천 주변, 저지대, 외곽 농업지역,
-        녹지지역 등의 공간적 특성을 고려하여 분석 지점을 구성하고
-        위험 요소별로 1~5의 탐구용 점수를 부여하였다.
-      </p>
-
-      <p>
-        실제 측정값과 동일한 자료가 아니므로
-        본 지도는 기후위험의 공간적 차이를 이해하기 위한
-        교육용 시각화 자료로 활용하였다.
-      </p>
-
-    </section>
-
-  </main>
-
-
-  <footer>
-
-    <p>
-      베트남 기후위험 지도 프로젝트
-    </p>
-
-    <p>
-      HTML · CSS · JavaScript · Leaflet
-    </p>
-
-  </footer>
-
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script src="data/risk-data.js"></script>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
